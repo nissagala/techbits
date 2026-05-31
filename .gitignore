@@ -1,0 +1,9 @@
+/vendor
+/node_modules
+.env
+.env.*
+!.env.example
+storage/app/public/*
+storage/logs/*
+bootstrap/cache/*
+.specify/          # SpecKit working files — optional, see note below
