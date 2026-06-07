@@ -12,6 +12,9 @@ use App\Http\Controllers\Admin\MessageController;
 // Admin login (public — no EnsureAdmin)
 Route::get('/', [AuthController::class, 'showLogin'])->name('admin.login');
 Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
+Route::get('/otp', [AuthController::class, 'showOtp'])->name('admin.login.otp');
+Route::post('/otp', [AuthController::class, 'verifyOtp'])->name('admin.login.otp.submit');
+Route::post('/otp/resend', [AuthController::class, 'resendOtp'])->name('admin.login.otp.resend');
 
 // Admin authenticated routes
 Route::middleware('ensure.admin')->group(function () {

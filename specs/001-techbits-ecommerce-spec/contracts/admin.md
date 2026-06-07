@@ -1,19 +1,52 @@
-# Form Contracts: Admin (A1–A11)
+# Form Contracts: Admin (A1–A11, A1-OTP)
 
-All routes under `/tb-backroom-engine/*` prefix. All except A1 guarded by `EnsureAdmin` middleware.
+All routes under `/tb-backroom-engine/*` prefix. All except A1 and A1-OTP guarded by `EnsureAdmin` middleware.
 
 ---
 
-## POST /tb-backroom-engine/login (A1)
+## POST /tb-backroom-engine/login (A1 — modified: now dispatches OTP)
+
+**Behaviour changed** (feature 003): On valid credentials, dispatches OTP email and redirects to OTP entry screen instead of establishing a session directly.
 
 | Field | Rules |
 |---|---|
 | email | required, email:rfc, max:254 |
 | password | required, string |
 
-**On success**: `Auth::guard('admin')->login($user)` (or use a session flag to mark admin session).
-No OTP, no forgot-password, no remember-me.
-**On failure**: Generic "Invalid email or password."
+**On success**: OTP dispatched to admin email; session stores `pending_admin_id`; redirect to `GET /tb-backroom-engine/otp`.
+**On failure**: Generic "Invalid email or password." (increments `failed_login_attempts`; locks account at 5 attempts for 15 minutes).
+
+---
+
+## GET /tb-backroom-engine/otp (A1-OTP — show)
+
+Session guard: `pending_admin_id` must exist → else redirect to `/tb-backroom-engine/`.
+
+**Response**: Renders admin OTP entry screen with generic "We've sent a verification code to your registered email address." message (no email hint).
+
+---
+
+## POST /tb-backroom-engine/otp (A1-OTP — verify)
+
+Session guard: `pending_admin_id` must exist → else redirect to `/tb-backroom-engine/`.
+
+| Field | Rules |
+|---|---|
+| otp | required, digits:6 |
+
+**On invalid/expired OTP**: Generic error, redirect back to OTP form. After 5 wrong attempts: OTP invalidated, `pending_admin_id` cleared, redirect to admin login.
+**On success**: OTP invalidated, session cleared, `Auth::login($user, false)`, `session()->regenerate()`, redirect to `admin.dashboard`.
+
+---
+
+## POST /tb-backroom-engine/otp/resend (A1-OTP — resend)
+
+Session guard: `pending_admin_id` must exist → else redirect to `/tb-backroom-engine/`.
+
+No body fields.
+
+**Within 60-second cooldown**: Generic error "Please wait before requesting a new code."
+**After cooldown**: Previous OTP invalidated, new OTP generated and dispatched, redirect back to OTP screen with success flash.
 
 ---
 
