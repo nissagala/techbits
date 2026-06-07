@@ -96,7 +96,7 @@ php artisan serve
 ```
 
 Visit `http://localhost:8000` for the storefront.
-Visit `http://localhost:8000/admin` for the admin panel.
+Visit `http://localhost:8000/tb-backroom-engine` for the admin panel.
 
 ---
 
@@ -122,6 +122,6 @@ Visit `http://localhost:8000/admin` for the admin panel.
 - [ ] Log in with OTP → session established, cart badge visible
 - [ ] Add product to cart → badge increments
 - [ ] Complete 3-step checkout → order appears in My Orders (S18)
-- [ ] Admin login at `/admin` → dashboard shows counters
+- [ ] Admin login at `/tb-backroom-engine` → dashboard shows counters
 - [ ] Admin can add a product, toggle featured, verify it appears on home page
 - [ ] Admin can advance an order from Pending → Processing

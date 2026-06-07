@@ -261,7 +261,7 @@ A user has exactly one role; no overlap. Admin is not also a customer.
 ### 5.4 Role Behaviour Rules
 - **Guest → Customer:** guest cart held by browser session; on register/login it **merges** into the account cart (duplicate products: quantities summed, capped — see 10.5). A guest attempting checkout is redirected to login/register and returned to checkout afterward.
 - **Customer session:** stays logged in until logout or expiry; visiting login/register while logged in redirects to the account dashboard; cart persists across devices.
-- **Admin separation:** admin area at a separate path (`/admin`), separate login, not linked from public header/footer; reachable only by direct URL. A logged-in admin is treated as a guest by the storefront; to test purchasing they use a separate customer account.
+- **Admin separation:** admin area at a separate path (`/tb-backroom-engine`), separate login, not linked from public header/footer; reachable only by direct URL. A logged-in admin is treated as a guest by the storefront; to test purchasing they use a separate customer account.
 - **Password rules:** customers self-serve change and reset; admins have no self-service reset (managed manually).
 
 ---
@@ -331,7 +331,7 @@ A user has exactly one role; no overlap. Admin is not also a customer.
 - **J15. Order history** — My Orders → list (newest first) → open order → read-only detail.
 
 ### 7.3 Admin
-- **J16. Admin login** — direct `/admin` URL → login → dashboard.
+- **J16. Admin login** — direct `/tb-backroom-engine` URL → login → dashboard.
 - **J17. Add product** — Add product → fields + specs rows + multi-image upload (set primary) → save → appears in list and (if active) on storefront.
 - **J18. Edit product** — list → find (search/filter) → Edit → update/add/remove images, toggle featured/active → save → storefront updates.
 - **J19. Delete product** — Delete → confirm → removed; historical orders intact via line-item snapshot.
@@ -620,4 +620,4 @@ The two files share screen IDs (S1–S30, A1–A11) and the Glossary so each can
 - **Simulated payment** — a payment form that validates format only and is always treated as accepted; no real gateway; CVV never stored.
 - **Order statuses** — Pending → Processing → Shipped → Delivered; Cancelled (from any non-Delivered state).
 - **District** — one of the 25 official Sri Lankan districts (address field).
-- **Storefront** — the customer-facing site (vs. the Admin panel at `/admin`).
+- **Storefront** — the customer-facing site (vs. the Admin panel at `/tb-backroom-engine`).

@@ -1,10 +1,10 @@
 # Form Contracts: Admin (A1–A11)
 
-All routes under `/admin/*` prefix. All except A1 guarded by `EnsureAdmin` middleware.
+All routes under `/tb-backroom-engine/*` prefix. All except A1 guarded by `EnsureAdmin` middleware.
 
 ---
 
-## POST /admin/login (A1)
+## POST /tb-backroom-engine/login (A1)
 
 | Field | Rules |
 |---|---|
@@ -17,8 +17,8 @@ No OTP, no forgot-password, no remember-me.
 
 ---
 
-## POST /admin/products (A4 — Create Product)
-## PUT /admin/products/{id} (A5 — Edit Product)
+## POST /tb-backroom-engine/products (A4 — Create Product)
+## PUT /tb-backroom-engine/products/{id} (A5 — Edit Product)
 
 | Field | Rules |
 |---|---|
@@ -44,13 +44,13 @@ for edit; for create, check all including soft-deleted (no reuse after deletion)
 
 ---
 
-## DELETE /admin/products/{id}/images/{imageId} (Remove product image)
+## DELETE /tb-backroom-engine/products/{id}/images/{imageId} (Remove product image)
 
 Authorization: imageId must belong to product. Cannot delete if it would leave 0 images and product is_active=true.
 
 ---
 
-## POST /admin/categories (A6 — Create Category)
+## POST /tb-backroom-engine/categories (A6 — Create Category)
 
 | Field | Rules |
 |---|---|
@@ -58,7 +58,7 @@ Authorization: imageId must belong to product. Cannot delete if it would leave 0
 
 ---
 
-## PUT /admin/categories/{id} (A6 — Rename Category)
+## PUT /tb-backroom-engine/categories/{id} (A6 — Rename Category)
 
 | Field | Rules |
 |---|---|
@@ -66,13 +66,13 @@ Authorization: imageId must belong to product. Cannot delete if it would leave 0
 
 ---
 
-## DELETE /admin/categories/{id} (A6)
+## DELETE /tb-backroom-engine/categories/{id} (A6)
 
 **Guard**: Category must have 0 products. If products exist → 422 with message "Cannot delete a category that contains products."
 
 ---
 
-## POST /admin/orders/{id}/advance (A8 — Advance Order Status)
+## POST /tb-backroom-engine/orders/{id}/advance (A8 — Advance Order Status)
 
 No body. Advances status by one step (pending→processing→shipped→delivered).
 **Guard**: Order must not be in delivered or cancelled state.
@@ -80,7 +80,7 @@ On success: update status, create `order_status_logs` entry, send T5 email.
 
 ---
 
-## POST /admin/orders/{id}/cancel (A8 — Cancel Order)
+## POST /tb-backroom-engine/orders/{id}/cancel (A8 — Cancel Order)
 
 | Field | Rules |
 |---|---|
@@ -92,7 +92,7 @@ for each line where `product_id IS NOT NULL`), create log entry, send T5 Cancell
 
 ---
 
-## POST /admin/customers/{id}/toggle (A9 — Toggle Customer Status)
+## POST /tb-backroom-engine/customers/{id}/toggle (A9 — Toggle Customer Status)
 
 No body (or confirm=true for deactivation).
 Toggles between active↔inactive. Requires confirmation modal on front end for deactivation.
@@ -100,6 +100,6 @@ Toggles between active↔inactive. Requires confirmation modal on front end for 
 
 ---
 
-## POST /admin/messages/{id}/unread (A11 — Mark Message Unread)
+## POST /tb-backroom-engine/messages/{id}/unread (A11 — Mark Message Unread)
 
 No body. Sets `is_read=false` on the message.

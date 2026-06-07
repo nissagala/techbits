@@ -152,7 +152,7 @@ Do not use Breeze, Jetstream, or Sanctum unless a specific feature explicitly re
 ## Routing & Access Control
 
 - Storefront routes: `/` prefix — public, accessible to Guest and Customer roles.
-- Admin routes: `/admin/*` prefix — admin-only, not linked from public navigation.
+- Admin routes: `/tb-backroom-engine/*` prefix — admin-only, not linked from public navigation.
 - Three roles: Guest, Customer, Admin. No role overlap. Admin is not a customer. Full
   definitions in SCOPE.md §5.
 - Guest cart MUST merge into account cart on login, with quantities summed and capped per

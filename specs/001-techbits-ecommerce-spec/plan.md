@@ -245,7 +245,7 @@ techbits/                                       ← Laravel project root (compos
 │       └── app.css                             (tech-blue palette, LKR formatting, components)
 ├── routes/
 │   ├── web.php                                 (storefront + auth + account + checkout + static)
-│   └── admin.php                               (admin routes, /admin prefix)
+│   └── admin.php                               (admin routes, /tb-backroom-engine prefix)
 └── storage/
     └── app/public/products/                    (uploaded product images, symlinked to public/)
 ```
@@ -253,7 +253,7 @@ techbits/                                       ← Laravel project root (compos
 **Structure Decision**: Single Laravel project at the repository root. All 41 screens are
 server-rendered Blade views. Admin lives under `Admin/` controller namespace and `admin/` view
 subdirectory within the same project, protected by `EnsureAdmin` middleware. Admin routes defined
-in `routes/admin.php` and registered with the `/admin` prefix via `bootstrap/app.php`.
+in `routes/admin.php` and registered with the `/tb-backroom-engine` prefix via `bootstrap/app.php`.
 
 Product soft-deletes are used (not visible as "soft" to users — behave like hard deletes from
 storefront perspective) to enforce the "SKU not reusable after deletion" business rule without a

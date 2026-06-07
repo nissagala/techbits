@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
         then: function () {
             \Illuminate\Support\Facades\Route::middleware('web')
-                ->prefix('admin')
+                ->prefix('tb-backroom-engine')
                 ->group(base_path('routes/admin.php'));
         },
     )
@@ -33,7 +33,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Render S30 for 404s on the storefront
         $exceptions->render(function (NotFoundHttpException $e, Request $request) {
-            if (! $request->is('admin/*') && ! $request->is('api/*')) {
+            if (! $request->is('tb-backroom-engine/*') && ! $request->is('api/*')) {
                 return response()->view('error', ['message' => 'Page not found'], 404);
             }
         });
