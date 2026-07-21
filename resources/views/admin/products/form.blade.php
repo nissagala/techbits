@@ -73,10 +73,9 @@
                 <div style="position:relative;">
                     <img src="{{ asset('storage/'.$img->path) }}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;border:{{ $img->is_primary ? '2px solid var(--primary)' : '1px solid var(--border)' }};">
                     @if($img->is_primary)<span style="position:absolute;bottom:0;left:0;right:0;font-size:.6rem;text-align:center;background:var(--primary);color:#fff;padding:1px;">Primary</span>@endif
-                    <form method="POST" action="{{ route('admin.products.images.destroy', [$product, $img]) }}" onsubmit="return confirm('Remove image?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" style="position:absolute;top:-4px;right:-4px;background:var(--error);color:#fff;border:none;border-radius:9999px;width:18px;height:18px;font-size:.7rem;cursor:pointer;line-height:18px;text-align:center;padding:0;">✕</button>
-                    </form>
+                    <button type="button"
+                            onclick="deleteImage('img-delete-{{ $img->id }}')"
+                            style="position:absolute;top:-4px;right:-4px;background:var(--error);color:#fff;border:none;border-radius:9999px;width:18px;height:18px;font-size:.7rem;cursor:pointer;line-height:18px;text-align:center;padding:0;">✕</button>
                 </div>
                 @endforeach
             </div>
@@ -101,13 +100,35 @@
 
         @if(isset($product))
         <hr style="margin:1rem 0;border-color:var(--border);">
-        <form method="POST" action="{{ route('admin.products.destroy', $product) }}" onsubmit="return confirm('Delete this product? This cannot be undone.')">
-            @csrf @method('DELETE')
-            <button type="submit" class="btn btn-danger" style="width:100%;">Delete product</button>
-        </form>
+        <button type="button" onclick="deleteProduct()" class="btn btn-danger" style="width:100%;">Delete product</button>
         @endif
     </div>
     </div>
 </form>
+{{-- Delete forms live outside the main form to avoid nested-form issues --}}
+@if(isset($product))
+<form id="product-delete-form" method="POST" action="{{ route('admin.products.destroy', $product) }}" style="display:none;">
+    @csrf @method('DELETE')
+</form>
+@endif
+@if(isset($product) && $product->images->count())
+    @foreach($product->images as $img)
+    <form id="img-delete-{{ $img->id }}" method="POST" action="{{ route('admin.products.images.destroy', [$product, $img]) }}" style="display:none;">
+        @csrf @method('DELETE')
+    </form>
+    @endforeach
+@endif
+
+<script>
+function deleteImage(formId) {
+    if (!confirm('Remove image?')) return;
+    document.getElementById(formId).submit();
+}
+function deleteProduct() {
+    if (!confirm('Delete this product? This cannot be undone.')) return;
+    document.getElementById('product-delete-form').submit();
+}
+</script>
+
 {{-- addSpecRow() and showToast() come from public/js/app.js --}}
 @endsection
