@@ -32,7 +32,7 @@ class ProductController extends Controller
     {
         $q = $request->input('q', '');
 
-        if (mb_strlen($q) < 2) {
+        if ($q !== '' && mb_strlen($q) < 2) {
             $categories = Category::orderBy('name')->get();
             return view('storefront.search', [
                 'q' => $q, 'products' => null, 'categories' => $categories,
@@ -40,8 +40,10 @@ class ProductController extends Controller
             ]);
         }
 
-        $query = Product::with(['images'])->active()
-            ->where('name', 'like', '%' . $q . '%');
+        $query = Product::with(['images'])->active();
+        if ($q !== '') {
+            $query->where('name', 'like', '%' . $q . '%');
+        }
 
         if ($request->category) {
             $query->where('category_id', $request->category);

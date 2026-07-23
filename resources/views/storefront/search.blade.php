@@ -19,7 +19,7 @@
     <div class="alert alert-warning">Please enter at least 2 characters to search.</div>
 @endif
 
-@if($q && strlen($q) >= 2)
+@if(!isset($shortQuery) || !$shortQuery)
 {{-- Filter bar --}}
 <form method="GET" action="{{ route('search') }}" style="display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;margin-bottom:1.25rem;">
     <input type="hidden" name="q" value="{{ $q }}">
